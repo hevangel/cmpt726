@@ -90,7 +90,7 @@ def linear_regression(x, t, basis, reg_lambda=0, degree=0, bias=0, mu=0, s=1):
     # Measure root mean squared error on training data.
     new_t = phi.dot(w)
     rmse = np.square(t - new_t)
-    train_err = sum(np.square(rmse))[0,0]
+    train_err = np.sqrt(sum(np.square(rmse))/x.shape[0])[0,0]
 
     return (w, train_err)
 
@@ -139,6 +139,6 @@ def evaluate_regression(x, t, w, basis, degree, bias=0):
     phi = design_matrix(basis, degree, x, bias)
     t_est = phi.dot(w)
     rmse = np.square(t - t_est)
-    err = sum(np.square(rmse))[0,0]
+    err = np.sqrt(sum(np.square(rmse)) / x.shape[0])[0, 0]
 
     return (t_est, err)
