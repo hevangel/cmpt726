@@ -24,13 +24,13 @@ col = 11
 mu = [100, 10000]
 s = 2000.0
 
-x_train = x[0:N_TRAIN, col]
-x_test = x[N_TRAIN:, col]
+x_train = values[0:N_TRAIN, col]
+x_test = values[N_TRAIN:, col]
 t_train = targets[0:N_TRAIN]
 t_test = targets[N_TRAIN:]
 
-(w, tr_err) = a1.linear_regression(x_train, t_train, 'sigmoid', mu=mu, s=s)
-(t_est, te_err) = a1.evaluate_regression(x_test, t_test, w[mu], 'sigmoid', mu=mu, s=s)
+(w, tr_err) = a1.linear_regression(x_train, t_train, 'sigmoid', bias=bias, mu=mu, s=s)
+(t_est, te_err) = a1.evaluate_regression(x_test, t_test, w, 'sigmoid', bias=bias, mu=mu, s=s)
 
 # importlib.reload(a1)
 
@@ -42,7 +42,7 @@ df = {}
 t2 = {}
 xval = np.squeeze(x[:, col], axis=1).tolist()[0]
 t = np.squeeze(targets, axis=1).tolist()[0]
-(t_est, te_err) = a1.evaluate_regression(x[:,col], t, w, 'sigmoid', mu=mu, s=s)
+(t_est, te_err) = a1.evaluate_regression(x[:,col], t, w, 'sigmoid', bias=bias, mu=mu, s=s)
 t2 = np.squeeze(t_est, axis=1).tolist()[0]
 df = pd.DataFrame({'t':t, 't2':t2}, index=xval)
 ax = df.reset_index().plot.scatter(x='index', y='t')
