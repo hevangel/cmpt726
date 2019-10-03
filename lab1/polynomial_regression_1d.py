@@ -42,16 +42,17 @@ df.T.plot.bar()
 plt.show()
 
 # visualize_1d
-#phi = a1.design_matrix('polynomial',3,x[:,11],1)
-
-xval = np.squeeze(x[:, col], axis=1).tolist()[0]
 t = np.squeeze(targets, axis=1).tolist()[0]
 df = {}
-for col in [11,12,13]:
+for col in range(11,13+1):
+    xval = np.squeeze(x[:, col], axis=1).tolist()[0]
     (t_est, te_err) = a1.evaluate_regression(x[:,col], t, w[col], 'polynomial', 3, bias)
     t2 = np.squeeze(t_est, axis=1).tolist()[0]
     df[col] = pd.DataFrame({'t':t, 't2':t2}, index=xval)
-    df[col].sort_index().plot()
-    plt.title(features[col])
+    ax = df[col].reset_index().plot.scatter(x='index', y='t')
+    df[col].reset_index().plot.scatter(x='index', y='t2', color='Red', ax=ax)
+    plt.title(col)
     plt.show()
+
+
 
