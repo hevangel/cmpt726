@@ -57,7 +57,7 @@ def normalize_data(x):
     
 
 
-def linear_regression(x, t, basis, reg_lambda=0, degree=0, bias=0, mu=0, s=1):
+def linear_regression(x, t, basis, reg_lambda = 0, degree = 0, mu = 0, s = 1):
     """Perform linear regression on a training set with specified regularizer lambda and basis
 
     Args:
@@ -66,7 +66,6 @@ def linear_regression(x, t, basis, reg_lambda=0, degree=0, bias=0, mu=0, s=1):
       reg_lambda is lambda to use for regularization tradeoff hyperparameter
       basis is string, name of basis to use
       degree is degree of polynomial to use (only for polynomial basis)
-      bias has bias term or not
       mu,s are parameters of Gaussian basis
 
     Returns:
@@ -76,69 +75,76 @@ def linear_regression(x, t, basis, reg_lambda=0, degree=0, bias=0, mu=0, s=1):
 
     # Construct the design matrix.
     # Pass the required parameters to this function
-    phi = design_matrix(basis, degree, x, bias, mu, s)
-    phi_pinv = np.linalg.pinv(phi)
+    phi = design_matrix(x, basis, degree = degree)
             
     # Learning Coefficients
     if reg_lambda > 0:
         # regularized regression
-        w = None
+        pass
     else:
         # no regularization
-        w = phi_pinv.dot(t)
+        # compute pseudo inverse of design matrix
+        phi_pseudo_inv = np.linalg.pinv(phi)
+        w = np.dot(phi_pseudo_inv, t)
 
     # Measure root mean squared error on training data.
-    new_t = phi.dot(w)
-    train_err = np.sqrt(sum(np.square(t - new_t))/x.shape[0])[0,0]
+    predicted_target = np.dot(phi, w)
+    target_diff = predicted_target - t
+    train_err = np.sqrt((np.dot(target_diff.T, target_diff).item())/t.shape[0])
 
     return (w, train_err)
 
 
 
-def design_matrix(basis=None, degree=None, x=None, bias=None, mu=None, s=None):
+def design_matrix(x, basis, degree = 0):
     """ Compute a design matrix Phi from given input datapoints and basis.
 
     Args:
-        degree is the degree of the polynomials
-        x is the training data
-        bias - 0/1 bias term
+        x is input datapoints
+        basis is string, name of basis to use
+        degree is degree of polynomial to use (only for polynomial basis)
 
     Returns:
-      phi design matrix:w
-
+      phi design matrix
     """
 
     if basis == 'polynomial':
-        phi = np.ones((x.shape[0],bias))
-        for i in range(1,degree+1):
-            phi = np.hstack((phi, np.power(x,i)))
+        rows = x.shape[0]
+        bias = np.ones((rows, 1), dtype = int)
+
+        phi = np.hstack((bias, x))
+
+        if degree > 1:
+            for i in range(2, degree + 1):
+                phi_deg = np.power(x, i)
+                phi = np.hstack((phi, phi_deg))
     elif basis == 'sigmoid':
-        phi = np.ones((x.shape[0],bias))
-        for m in mu:
-            phi = np.hstack((phi, 1/(1+np.exp((m-x)/s))))
-    else:
+        phi = None
+    else: 
         assert(False), 'Unknown basis %s' % basis
 
     return phi
 
 
-def evaluate_regression(x, t, w, basis, degree=0, bias=0, mu=0, s=1):
+
+def evaluate_regression(x, t, w, basis, degree = 0):
     """Evaluate linear regression on a dataset.
 
     Args:
-      x - inputs
-      t - output
-      w - weight matrix
-      degree - degree of the polynomial
-      bias - has bias term or not
+      x is test inputs
+      t is test targets
+      w is learned coefficients
+      basis is string, name of basis to use
+      degree is degree of polynomial to use (only for polynomial basis)
 
     Returns:
       t_est values of regression on inputs
-      err RMS error on training set if t is not None
+      err RMS error on test set
       """
-
-    phi = design_matrix(basis, degree, x, bias, mu, s)
-    t_est = phi.dot(w)
-    err = np.sqrt(sum(np.square(t - t_est)) / x.shape[0])[0, 0]
+    phi = design_matrix(x, basis, degree = degree)
+    # Measure root mean squared error on test data.
+    t_est = np.dot(phi, w)
+    target_diff = t_est - t
+    err = np.sqrt((np.dot(target_diff.T, target_diff).item()) / t.shape[0])
 
     return (t_est, err)
