@@ -12,21 +12,22 @@ targets = values[:,1]
 x = values[:,7:]
 #x = a1.normalize_data(x)
 
-N_TRAIN = 100
 bias = 1
+N_TRAIN = 100
+t_train = targets[0:N_TRAIN]
+t_test = targets[N_TRAIN:]
 
 w = {}
 tr_err = {}
 t_est = {}
 te_err = {}
 
+
 for col in range(8,15+1):
     print('column:', col)
 
-    x_train = x[0:N_TRAIN,col]
-    x_test = x[N_TRAIN:,col]
-    t_train = targets[0:N_TRAIN]
-    t_test = targets[N_TRAIN:]
+    x_train = values[0:N_TRAIN,col]
+    x_test = values[N_TRAIN:,col]
 
     (w[col], tr_err[col]) = a1.linear_regression(x_train, t_train, 'polynomial', 0, 3, bias)
     (t_est[col], te_err[col]) = a1.evaluate_regression(x_test, t_test, w[col], 'polynomial', 3, bias)
