@@ -13,7 +13,7 @@ x = values[:,7:]
 #x = a1.normalize_data(x)
 
 N_TRAIN = 100
-bias = 0
+bias = 1
 
 w = {}
 tr_err = {}
@@ -35,6 +35,23 @@ for col in range(8,15+1):
 
 
 # Produce a plot of results.
+plt.close('all')
+
 df = pd.DataFrame([tr_err, te_err], index=['tr_err', 'te_err'])
 df.T.plot.bar()
 plt.show()
+
+# visualize_1d
+#phi = a1.design_matrix('polynomial',3,x[:,11],1)
+
+xval = np.squeeze(x[:, col], axis=1).tolist()[0]
+t = np.squeeze(targets, axis=1).tolist()[0]
+df = {}
+for col in [11,12,13]:
+    (t_est, te_err) = a1.evaluate_regression(x[:,col], t, w[col], 'polynomial', 3, bias)
+    t2 = np.squeeze(t_est, axis=1).tolist()[0]
+    df[col] = pd.DataFrame({'t':t, 't2':t2}, index=xval)
+    df[col].sort_index().plot()
+    plt.title(features[col])
+    plt.show()
+
