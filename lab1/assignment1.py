@@ -76,7 +76,7 @@ def linear_regression(x, t, basis, reg_lambda=0, degree=0, bias=0, mu=0, s=1):
 
     # Construct the design matrix.
     # Pass the required parameters to this function
-    phi = design_matrix(basis, degree, x, bias)
+    phi = design_matrix(basis, degree, x, bias, mu, s)
     phi_pinv = np.linalg.pinv(phi)
             
     # Learning Coefficients
@@ -96,7 +96,7 @@ def linear_regression(x, t, basis, reg_lambda=0, degree=0, bias=0, mu=0, s=1):
 
 
 
-def design_matrix(basis=None, degree=None, x=None, bias=None):
+def design_matrix(basis=None, degree=None, x=None, bias=None, mu=None, s=None):
     """ Compute a design matrix Phi from given input datapoints and basis.
 
     Args:
@@ -114,14 +114,16 @@ def design_matrix(basis=None, degree=None, x=None, bias=None):
         for i in range(1,degree+1):
             phi = np.hstack((phi, np.power(x,i)))
     elif basis == 'sigmoid':
-        phi = None
-    else: 
+        phi = np.ones((x.shape[0],bias))
+        for m in mu:
+            phi = np.hstack((phi, 1/(1+np.exp((m-x)/s))))
+    else:
         assert(False), 'Unknown basis %s' % basis
 
     return phi
 
 
-def evaluate_regression(x, t, w, basis, degree, bias=0):
+def evaluate_regression(x, t, w, basis, degree=0, bias=0, mu=0, s=1):
     """Evaluate linear regression on a dataset.
 
     Args:
@@ -136,7 +138,7 @@ def evaluate_regression(x, t, w, basis, degree, bias=0):
       err RMS error on training set if t is not None
       """
 
-    phi = design_matrix(basis, degree, x, bias)
+    phi = design_matrix(basis, degree, x, bias, mu, s)
     t_est = phi.dot(w)
     rmse = np.square(t - t_est)
     err = np.sqrt(sum(np.square(rmse)) / x.shape[0])[0, 0]
