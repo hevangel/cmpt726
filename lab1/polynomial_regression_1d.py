@@ -33,12 +33,8 @@ for col in range(8,15+1):
 
 # importlib.reload(a1)
 
+
 # Produce a plot of results.
-#plt.rcParams.update({'font.size': 15})
-#plt.plot(list(tr_err.keys()), list(tr_err.values()))
-#plt.plot(list(te_err.keys()), list(te_err.values()))
-#plt.ylabel('RMS')
-#plt.legend(['Training error','Testing error'])
-#plt.title('Fit with polynomials, no regularization')
-#plt.xlabel('Polynomial degree')
-#plt.show()
+df = pd.DataFrame([tr_err, te_err], index=['tr_err', 'te_err'])
+df.T.plot.bar()
+plt.show()
