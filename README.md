@@ -1,9 +1,9 @@
-# cmpt726
-SFU CMPT726 Machine Learning Assignments
+# SFU CMPT726 Machine Learning Assignments
 
-# Assignment 1
-=============
-## Regression
+
+## Assignment 1
+
+### Regression
 
 In this question you will train models for regression and analyze a dataset. Start by downloading
 the code and dataset from the website.
@@ -14,7 +14,7 @@ http://www.unicef.org/sowc2013/statistics.html
 Child mortality rates (number of children who die before age 5, per 1000 live births) for 195
 countries, and a set of other indicators are included.
 
-### 1. Getting started
+#### 1. Getting started
 
 Run the provided script polynomial regression.py to load the dataset and names of countries
 / features.
@@ -34,7 +34,7 @@ For the rest of this question use the following data and splits for train/test a
 11-20 (Azerbaijan to Bhutan), ... . I.e. train on countries 11-100, validate on 1-10; train on
 1-10 and 21-100, validate on 11-20, ...
 
-### 2. Polynomial Regression
+#### 2. Polynomial Regression
 
 Implement linear basis function regression with polynomial basis functions. Use only monomials
 of a single variable (x1; x2^2; x2^2) and no cross-terms (x1  x2).
@@ -71,7 +71,7 @@ visualize 1d.py may be useful.
 In your report, include plots of the fits for degree 3 polynomials for features 11 (GNI), 12
 (Life expectancy), 13 (literacy).
 
-### 3. Sigmoid Basis Functions
+#### 3. Sigmoid Basis Functions
 
 1. Create a python script sigmoid regression.py for the following.
 Implement regression using sigmoid basis functions for a single input feature. Use two
@@ -82,7 +82,7 @@ Fit this regression model using feature 11 (GNI per capita).
 In your report, include a plot of the fit for feature 11 (GNI).
 In your report, include the training and testing error for this regression model.
 
-### 4. Regularized Polynomial Regression
+#### 4. Regularized Polynomial Regression
 
 1. Create a python script polynomial regression reg.py for the following.
 Implement L2-regularized regression. Fit a degree 2 polynomial using lambda = f0; :01; :1; 1; 10; 102; 103; 104g.
@@ -91,5 +91,5 @@ on the best value for lambda. Produce a plot of average validation set error ver
 matplotlib.pyplot.semilogx plot, putting lambda on a log scale2.
 
 Put this plot in your report, and note which lambda value you would choose from the crossvalidation.
-2The
+
 
