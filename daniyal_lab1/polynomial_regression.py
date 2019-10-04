@@ -22,12 +22,10 @@ t_test = targets[N_TRAIN:]
 # dictionaries of train_err/test_err for a range of polynomial degrees
 train_err = {}
 test_err = {}
-weight = {}
 for degree in range(1, 7):
     (w, tr_err) = a1.linear_regression(x_train, t_train, 'polynomial', degree = degree)
     (t_est, te_err) = a1.evaluate_regression(x_test, t_test, w, 'polynomial', degree = degree)
 
-    weight[degree] = w
     train_err[degree] = tr_err
     test_err[degree] = te_err
 

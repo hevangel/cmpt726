@@ -18,6 +18,7 @@ t_test = targets[N_TRAIN:]
 # Pass the required parameters to these functions
 
 # list of train_err/test_err for polynomial_degree = 3
+weights = []
 train_err = []
 test_err = []
 for feature_idx in range(8, 16):
@@ -27,15 +28,16 @@ for feature_idx in range(8, 16):
     (w, tr_err) = a1.linear_regression(x_train, t_train, 'polynomial', degree = 3)
     (t_est, te_err) = a1.evaluate_regression(x_test, t_test, w, 'polynomial', degree = 3)
 
+    weights.append(w)
     train_err.append(tr_err)
     test_err.append(te_err)
 
 # Produce a plot of results.
-plt.rcParams.update({'font.size': 15})
-plt.plot(list(train_err.keys()), list(train_err.values()))
-plt.plot(list(test_err.keys()), list(test_err.values()))
-plt.ylabel('RMS')
-plt.legend(['Training error','Testing error'])
-plt.title('Fit with polynomials, no regularization')
-plt.xlabel('Polynomial degree')
-plt.show()
+#plt.rcParams.update({'font.size': 15})
+#plt.plot(list(train_err.keys()), list(train_err.values()))
+#plt.plot(list(test_err.keys()), list(test_err.values()))
+#plt.ylabel('RMS')
+#plt.legend(['Training error','Testing error'])
+#plt.title('Fit with polynomials, no regularization')
+#plt.xlabel('Polynomial degree')
+#plt.show()
