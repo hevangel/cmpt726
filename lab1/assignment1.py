@@ -82,7 +82,7 @@ def linear_regression(x, t, basis, reg_lambda=0, degree=0, bias=0, mu=0, s=1):
     # Learning Coefficients
     if reg_lambda > 0:
         # regularized regression
-        w = None
+        w = np.linalg.inv(phi.T.dot(phi) + reg_lambda * np.identity(phi.shape[1])).dot(phi.T).dot(t)
     else:
         # no regularization
         w = phi_pinv.dot(t)
