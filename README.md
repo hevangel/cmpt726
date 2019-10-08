@@ -1,7 +1,7 @@
 # SFU CMPT726 Machine Learning Assignments
 
 
-## Assignment 1 - Regression
+## Lab 1 - Regression
 
 In this question you will train models for regression and analyze a dataset. Start by downloading
 the code and dataset from the website.
