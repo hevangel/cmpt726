@@ -10,7 +10,7 @@ import math
 import random
 
 # Maximum number of iterations.  Continue until this limit, or when error change is below tol.
-max_iter = 50000
+max_iter = 5000
 tol = 0.00001
 
 # Step size for gradient descent.
@@ -63,24 +63,19 @@ for eta in etas:
 
     y = sps.expit(np.dot(X[index], w))
 
-    if t[index] != round(y):
+    # e is the error, negative log-likelihood (Eqn 4.90)
+    #e = -np.multiply(t[index], np.log(y)) + np.multiply((1-t[index]), np.log(1-y))
+    e = -(t[index]*math.log(y) + (1-t[index])*math.log(1-y))
 
-      # e is the error, negative log-likelihood (Eqn 4.90)
-      #e = -np.multiply(t[index], np.log(y)) + np.multiply((1-t[index]), np.log(1-y))
-      e = -(t[index]*math.log(y) + (1-t[index])*math.log(1-y))
+    # Add this error to the end of error vector.
+    e_all.append(e)
 
-      # Add this error to the end of error vector.
-      e_all.append(e)
+    # Gradient of the error, using Eqn 4.91
+    grad_e = np.multiply((y - t[index]), X[index].T)
 
-      # Gradient of the error, using Eqn 4.91
-      grad_e = np.multiply((y - t[index]), X[index].T)
-
-      # Update w, *subtracting* a step in the error derivative since we're minimizing
-      w_old = w
-      w = w - eta*grad_e
-    else:
-      e = 0
-      e_all.append(0)
+    # Update w, *subtracting* a step in the error derivative since we're minimizing
+    w_old = w
+    w = w - eta*grad_e
 
     # Plot current separator and data.  Useful for interactive mode / debugging.
     plt.figure(DATA_FIG)

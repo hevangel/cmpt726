@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def draw_sep(w):
+def draw_sep(w, line='r-'):
     """ Draw a hyperplane w'x
     w is [w_1 w_2 bias]'
     """
@@ -22,7 +22,7 @@ def draw_sep(w):
     else:
         sys.exit('Invalid separator')
 
-    plt.plot(np.squeeze(x1), np.squeeze(x2), 'r-', linewidth=0.85)
+    plt.plot(np.squeeze(x1), np.squeeze(x2), line, linewidth=0.85)
 
 
 def plot_mb(w, w_old):

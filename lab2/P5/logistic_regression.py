@@ -41,13 +41,13 @@ e_all = []
 DATA_FIG = 1
 
 # Set up the slope-intercept figure
-SI_FIG = 2
-plt.figure(SI_FIG, figsize=(8.5, 6))
-plt.rcParams.update({'font.size': 15})
-plt.title('Separator in slope-intercept space')
-plt.xlabel('slope')
-plt.ylabel('intercept')
-plt.axis([-5, 5, -10, 0])
+#SI_FIG = 2
+#plt.figure(SI_FIG, figsize=(8.5, 6))
+#plt.rcParams.update({'font.size': 15})
+#plt.title('Separator in slope-intercept space')
+#plt.xlabel('slope')
+#plt.ylabel('intercept')
+#plt.axis([-5, 5, -10, 0])
 
 
 for iter in range(0, max_iter):
@@ -78,18 +78,25 @@ for iter in range(0, max_iter):
   #plt.show()
 
   # Add next step of separator in m-b space.
-  plt.figure(SI_FIG)
-  a2.plot_mb(w, w_old)
+  #plt.figure(SI_FIG)
+  #a2.plot_mb(w, w_old)
   #plt.show()
 
   # Print some information.
-  print('epoch {0:d}, negative log-likelihood {1:.4f}, w={2}'.format(iter, e, w.T))
+  print('epoch {0:d}, negative log-likelihood {1:.4f}, w={2}, grad_e={3}'.format(iter, e, w.T, grad_e))
 
   # Stop iterating if error doesn't change more than tol.
   if iter > 0:
     if np.absolute(e-e_all[iter-1]) < tol:
       break
 
+plt.figure(DATA_FIG)
+plt.clf()
+plt.plot(X1[:,0],X1[:,1],'b.')
+plt.plot(X2[:,0],X2[:,1],'g.')
+a2.draw_sep(w)
+plt.axis([-5, 15, -10, 10])
+plt.show()
 
 # Plot error over iterations
 TRAIN_FIG = 3
