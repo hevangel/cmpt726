@@ -104,3 +104,7 @@ plt.title('Training logistic regression')
 plt.xlabel('Epoch')
 plt.legend()
 plt.show()
+
+for key in eta_e_all.keys():
+  print('eta=',key,'min e=',eta_e_all[key][-1])
+
