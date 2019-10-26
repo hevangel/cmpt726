@@ -13,6 +13,7 @@ hiddenLayerSize = 3
 # Only one output
 outputLayerSize = 1
 
+# Learning rate
 L = 0.1
 
 # There are 2 inputs for XOR
@@ -60,11 +61,13 @@ for i in range(0,100):
     x1 = random.randint(0,1)
     x2 = random.randint(0,1)
     y_ground_truth = x1 ^ x2
-    y_predict = np.dot(sigmod(np.dot(np.array([x1, x2]), Wh)), Wz)
-    print('ground truth:', y_ground_truth, 'predct:', y_predict )
-    if y_ground_truth != round(y_predict[0]):
+    y_predict = np.dot(sigmod(np.dot(np.array([x1, x2]), Wh)), Wz)[0]
+    y_predict_round = round(y_predict)
+    print('ground truth:', y_ground_truth, 'predict:', y_predict, 'round:', y_predict_round)
+    if y_ground_truth != y_predict_round:
         fail += 1
 
-print('fail:', fail)
+print('fail rate:', fail, '/100')
+
 
 
