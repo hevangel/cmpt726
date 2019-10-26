@@ -1,6 +1,5 @@
 import numpy as np
 import torch
-from torch import sigmoid
 import random
 
 dtype = torch.float
@@ -30,22 +29,26 @@ X = torch.tensor([[0, 0], [0, 1], [1, 0], [1, 1]], device=device, dtype=dtype)
 Y = torch.tensor([[0], [1], [1], [0]], device=device, dtype=dtype)
 
 
-Wh = torch.randn(inputLayerSize, hiddenLayerSize, device=device, dtype=dtype, requires_grad=True)
-Wz = torch.randn(hiddenLayerSize, outputLayerSize, device=device, dtype=dtype, requires_grad=True)
+
+def sigmoid(x):
+    return 1 / (1 + torch.exp(-x))
+
+
+def sigmoid_deriv(x):
+    return x * (1 - x)
+
+
+Wh = torch.randn(inputLayerSize, hiddenLayerSize, device=device, dtype=dtype)
+Wz = torch.randn(hiddenLayerSize, outputLayerSize, device=device, dtype=dtype)
 
 for i in range(epoch):
     H = sigmoid(X.mm(Wh))
     Z = H.mm(Wz)
-    E = (Y - Z).pow(2).sum()
-
-    E.backward()
-
-    with torch.no_grad():
-        Wz -= L * Wz.grad
-        Wh -= L * Wh.grad
-
-        Wz.grad.zero_()
-        Wh.grad.zero_()
+    E = Y - Z
+    dZ = E * L
+    Wz += H.t().mm(dZ)
+    dH = dZ.mm(Wz.t()) * sigmoid_deriv(H)
+    Wh += X.t().mm(dH)
 
 print("**************** error ****************")
 print(E)

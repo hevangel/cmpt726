@@ -25,7 +25,7 @@ X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 Y = np.array([[0], [1], [1], [0]])
 
 
-def sigmod(x):
+def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 
@@ -37,7 +37,7 @@ Wh = np.random.uniform(size=(inputLayerSize, hiddenLayerSize))
 Wz = np.random.uniform(size=(hiddenLayerSize, outputLayerSize))
 
 for i in range(epoch):
-    H = sigmod(np.dot(X, Wh))
+    H = sigmoid(np.dot(X, Wh))
     Z = np.dot(H, Wz)
     E = Y - Z
     dZ = E * L
@@ -61,7 +61,7 @@ for i in range(0,100):
     x1 = random.randint(0,1)
     x2 = random.randint(0,1)
     y_ground_truth = x1 ^ x2
-    y_predict = np.dot(sigmod(np.dot(np.array([x1, x2]), Wh)), Wz)[0]
+    y_predict = np.dot(sigmoid(np.dot(np.array([x1, x2]), Wh)), Wz)[0]
     y_predict_round = round(y_predict)
     print('ground truth:', y_ground_truth, 'predict:', y_predict, 'round:', y_predict_round)
     if y_ground_truth != y_predict_round:
